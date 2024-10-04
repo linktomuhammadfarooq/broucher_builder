@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BsFillImageFill, BsFolder, BsGrid1X2 } from "react-icons/bs";
 import { FaCloudUploadAlt, FaShapes, FaTrash } from "react-icons/fa";
 import { IoDuplicateOutline } from "react-icons/io5";
@@ -29,7 +30,7 @@ const Main = () => {
   const [height, setHeight] = useState("");
   const [opacity, setOpacity] = useState("");
   const [zIndex, setzIndex] = useState("");
-
+  const [textLinks, setTextLinks] = useState([]);
   const [padding, setPadding] = useState("");
   const [font, setFont] = useState("");
   const [weight, setWeight] = useState("");
@@ -40,7 +41,28 @@ const Main = () => {
     status: true,
     name: "",
   });
+  const [fontFamily, setFontFamily] = useState("font-arial"); // Default font family
+  const [selectedHeading, setSelectedHeading] = useState("");
+  const fontFamilies = [
+    { name: "Roboto", value: "Roboto" },
+    { name: "Open Sans", value: "Open Sans" },
+    { name: "Arial", value: "Arial" },
+    { name: "Georgia", value: "Georgia" },
+    { name: "Times New Roman", value: "Times" },
+    { name: "Courier New", value: "Courier" },
+    { name: "Verdana", value: "Verdana" },
+    { name: "Tahoma", value: "Tahoma" },
+  ];
 
+  const headingStyles = {
+    h1: { fontSize: "32px", fontWeight: 600 },
+    h2: { fontSize: "24px", fontWeight: 600 },
+    h3: { fontSize: "18.72px", fontWeight: 600 },
+    h4: { fontSize: "16px", fontWeight: 600 },
+    h5: { fontSize: "13.28px", fontWeight: 600 },
+    h6: { fontSize: "10.72px", fontWeight: 600 },
+    p: { fontSize: "16px", fontWeight: 400 }, // Assuming normal paragraph styles
+  };
   const [components, setComponents] = useState([
     {
       name: "main_frame",
@@ -49,12 +71,19 @@ const Main = () => {
       height: 650,
       width: 750,
       z_index: 1,
-      color: "#fff",
+      color: "#000000",
       image: "",
       setCurrentComponent: (a) => setCurrentComponent(a),
     },
   ]);
 
+  // URL validation function
+  const isValidURL = (string) => {
+    const res = string.match(
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}([\/\w\.-]*)*\/?$/
+    );
+    return res !== null;
+  };
   const setElements = (type, name) => {
     setState(type);
     setShow({
@@ -221,7 +250,7 @@ const Main = () => {
     setComponents([...components, style]);
   };
 
-  const add_text = (name, type) => {
+  const add_text = (name, type, fontFamily) => {
     setCurrentComponent("");
     const id = Date.now();
     const style = {
@@ -234,10 +263,12 @@ const Main = () => {
       rotate,
       z_index: 10,
       padding: 6,
-      font: 22,
-      title: "Add text",
-      weight: 400,
+      font: current_component.font || 20, // Use the font set in current_component
+      title: current_component.title || "add text", // Use the title set (h1, h2, etc.)
+      links: current_component.textLinks || "", // Use the title set (h1, h2, etc.)
+      weight: current_component.weight || 400,
       color: "#3c3c3d",
+      fontFamily: fontFamily,
       setCurrentComponent: (a) => setCurrentComponent(a),
       moveElement,
       resizeElement,
@@ -249,6 +280,7 @@ const Main = () => {
     setSelectItem(id);
     setCurrentComponent(style);
     setComponents([...components, style]);
+    setShow({ name: "", status: true });
   };
 
   const add_image = (img) => {
@@ -292,7 +324,10 @@ const Main = () => {
         components[index].font = font || current_component.font;
         components[index].padding = padding || current_component.padding;
         components[index].weight = weight || current_component.weight;
+        components[index].fontFamily =
+          fontFamily || current_component.fontFamily;
         components[index].title = text || current_component.title;
+        components[index].links = textLinks || current_component.textLinks;
       }
       if (current_component.name === "image") {
         components[index].radius = radius || current_component.radius;
@@ -320,6 +355,10 @@ const Main = () => {
       setOpacity("");
       setzIndex("");
       setText("");
+      setFont("");
+      setFontFamily("");
+      setTextLinks("");
+      setSelectedHeading("");
     }
   }, [
     color,
@@ -332,8 +371,10 @@ const Main = () => {
     zIndex,
     padding,
     font,
+    fontFamily,
     weight,
     text,
+    textLinks,
     radius,
     rotate,
   ]);
@@ -359,8 +400,6 @@ const Main = () => {
     };
     get_design();
   }, [design_id]);
-
-  console.log("state :: ", state);
   return (
     <div className="h-screen bg-black min-w-screen">
       <Header components={components} design_id={design_id} />
@@ -489,7 +528,7 @@ const Main = () => {
               <div>
                 <div className="grid grid-cols-1 gap-2">
                   <div
-                    onClick={() => add_text("text", "title")}
+                    onClick={() => add_text("text", "title", "fontFamily")}
                     className="bg-[#3c3c3d] cursor-pointer font-bold p-3 text-white text-xl rounded-sm"
                   >
                     <h2>Add a Text</h2>
@@ -532,6 +571,7 @@ const Main = () => {
                       setSelectItem={setSelectItem}
                       key={i}
                       info={c}
+                      // fontFamily={fontFamily}
                       current_component={current_component}
                       removeComponent={removeComponent}
                     />
@@ -541,7 +581,7 @@ const Main = () => {
             </div>
             {current_component && (
               <div className="h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
-                <div className="flex flex-col items-start justify-start h-full gap-6 px-3 pt-4">
+                <div className="flex flex-col items-start justify-start h-full gap-6 px-2 pt-4">
                   {current_component.name !== "main_frame" && (
                     <div className="flex items-center justify-start gap-5">
                       <div
@@ -592,7 +632,7 @@ const Main = () => {
                     )}
 
                   {current_component.name !== "main_frame" && (
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-5">
                       <div className="flex items-start justify-start gap-1">
                         <span className="text-md w-[70px]">Opacity : </span>
                         <input
@@ -644,7 +684,7 @@ const Main = () => {
                             />
                           </div>
                           <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[72px]">
+                            <span className="text-md w-[75px]">
                               Font size :{" "}
                             </span>
                             <input
@@ -671,7 +711,58 @@ const Main = () => {
                               value={current_component.weight}
                             />
                           </div>
-
+                          <div className="flex items-start justify-start gap-1">
+                            <span className="text-md w-[100px]">
+                              Font Family :{" "}
+                            </span>
+                            <select
+                              value={
+                                current_component.fontFamily
+                                  ? current_component.fontFamily
+                                  : fontFamily
+                              }
+                              onChange={(e) => {
+                                const selectedFont = e.target.value;
+                                setFontFamily(selectedFont);
+                                setCurrentComponent((prev) => ({
+                                  ...prev,
+                                  fontFamily: selectedFont, // Update current component font family
+                                }));
+                              }}
+                              className="border w-[85px] p-1 border-gray-700 bg-transparent rounded-md outline-none"
+                            >
+                              {fontFamilies.map((font) => (
+                                <option key={font.value} value={font.value}>
+                                  {font.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="flex items-start flex-wrap justify-start gap-1">
+                            {Object.keys(headingStyles).map((heading) => (
+                              <button
+                                key={heading}
+                                onClick={() => {
+                                  const { fontSize, fontWeight } =
+                                    headingStyles[heading];
+                                  setCurrentComponent((prev) => ({
+                                    ...prev,
+                                    font: parseInt(fontSize), // Set font size
+                                    weight: fontWeight, // Set font weight
+                                  }));
+                                  setFont(parseInt(fontSize));
+                                  setSelectedHeading(heading);
+                                }}
+                                className={`p-2 text-white rounded-md cursor-pointer mr-1 ${
+                                  selectedHeading === heading
+                                    ? "bg-gray-600"
+                                    : "bg-gray-700"
+                                }`}
+                              >
+                                {heading.toUpperCase()}
+                              </button>
+                            ))}
+                          </div>
                           <div className="flex flex-col items-start justify-start gap-2">
                             <input
                               onChange={(e) =>
@@ -684,12 +775,33 @@ const Main = () => {
                               type="text"
                               value={current_component.title}
                             />
-                            <button
-                              onClick={() => setText(current_component.title)}
-                              className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
-                            >
-                              Add
-                            </button>
+                            <div className="flex items-start justify-start gap-1">
+                              <button
+                                onClick={() => setText(current_component.title)}
+                                className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
+                              >
+                                Add
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const title = current_component.title;
+
+                                  console.log("title???", title);
+                                  if (isValidURL(title)) {
+                                    setCurrentComponent({
+                                      ...current_component,
+                                      links: title,
+                                    });
+                                    setTextLinks(title);
+                                  } else {
+                                    toast.error("Please enter a valid URL");
+                                  }
+                                }}
+                                className="px-4 py-2 text-xs text-white bg-blue-500 rounded-sm"
+                              >
+                                Add Link
+                              </button>
+                            </div>
                           </div>
                         </>
                       )}
