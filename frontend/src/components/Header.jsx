@@ -111,12 +111,13 @@ const Header = ({ components, design_id }) => {
     <div className="h-[60px] bg-gradient-to-r from-[#212122] via-[#27282b] to-[#2a2b2c] w-full">
       <div className="flex items-center justify-between h-full px-10 text-gray-300">
         <Link to="/">
-          <img
+          {/* <img
             src="https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg"
             alt=""
-          />
+          /> */}
+          Brochure Builder
         </Link>
-        <span className="text-xl">Broucher Builder</span>
+        {/* <span className="text-xl">Brochure Builder</span> */}
         <div className="flex items-center justify-center gap-2 text-gray-300">
           <button
             disabled={loader}

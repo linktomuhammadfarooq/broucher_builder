@@ -416,6 +416,7 @@ const Main = () => {
     );
     setNewImg(file);
     setStartCropping(false);
+    setCropComplete(false);
   };
 
   return (
