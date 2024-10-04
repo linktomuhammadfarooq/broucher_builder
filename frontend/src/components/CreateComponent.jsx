@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Element from "./Element";
 import ImageCrop from "./ImageCrop";
 
@@ -14,6 +14,45 @@ const CreateComponente = ({
   setCropComplete,
   handleImageCrop,
 }) => {
+  const [width, setWidth] = useState(600);
+  const [height, setHeight] = useState(450);
+  const isValidURL = (string) => {
+    const res = string.match(
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}([\/\w\.-]*)*\/?$/
+    );
+    return res !== null;
+  };
+  const resizeElement = (e) => {
+    e.preventDefault();
+
+    const startX = e.clientX; // Starting mouse X position
+    const startY = e.clientY; // Starting mouse Y position
+    const startWidth = width; // Starting width of the element
+    const startHeight = height; // Starting height of the element
+
+    const mouseMove = (moveEvent) => {
+      // Calculate the new dimensions based on mouse movement
+      const newWidth = Math.max(50, startWidth + (moveEvent.clientX - startX)); // Ensure minimum width
+      const newHeight = Math.max(
+        50,
+        startHeight + (moveEvent.clientY - startY)
+      ); // Ensure minimum height
+
+      // Use functional updates to set the new width and height
+      setWidth(newWidth);
+      setHeight(newHeight);
+    };
+
+    const mouseUp = () => {
+      window.removeEventListener("mousemove", mouseMove); // Unbind the event listeners
+      window.removeEventListener("mouseup", mouseUp);
+    };
+
+    // Bind the mousemove and mouseup events to the window
+    window.addEventListener("mousemove", mouseMove);
+    window.addEventListener("mouseup", mouseUp);
+  };
+
   let html = "";
 
   if (info.name === "main_frame") {
@@ -25,15 +64,21 @@ const CreateComponente = ({
         }}
         className="hover:border-[2px] hover:border-indigo-500 shadow-md"
         style={{
-          width: info.width + "px",
-          height: info.height + "px",
+          width: width + "px",
+          height: height + "px",
           background: info.color,
           zIndex: info.z_index,
+          position: "relative",
         }}
       >
         {info.image && (
           <img className="w-full h-full" src={info.image} alt="image" />
         )}
+
+        <div
+          onMouseDown={resizeElement}
+          className={`absolute inset-0 cursor-nwse-resize`} // full size overlay for resizing
+        ></div>
       </div>
     );
   }
@@ -137,6 +182,9 @@ const CreateComponente = ({
     );
   }
   if (info.name === "text") {
+    const linkIsValid = isValidURL(info.title);
+    console.log("linkIsValid", linkIsValid);
+    console.log("info?????", info);
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
         <div
@@ -151,6 +199,7 @@ const CreateComponente = ({
             padding: info.padding + "px",
             color: info.color,
             opacity: info.opacity,
+            fontFamily: info.fontFamily,
           }}
           className={`absolute group hover:border-[2px] ${
             info.id === selectItem ? "border-[2px]" : ""
@@ -161,10 +210,29 @@ const CreateComponente = ({
           )}
           <div onMouseDown={() => info.moveElement(info.id, info)}>
             <h2
-              style={{ fontSize: info.font + "px", fontWeight: info.weight }}
+              style={{
+                fontSize: info.font + "px",
+                fontWeight: info.weight,
+                fontFamily: info.fontFamily,
+              }}
               className="w-full h-full"
             >
-              {info.title}
+              {linkIsValid ? (
+                <a
+                  href={
+                    info.title.startsWith("http")
+                      ? info.title
+                      : `http://${info.title}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  {info.title}
+                </a>
+              ) : (
+                info.title
+              )}
             </h2>
           </div>
         </div>
