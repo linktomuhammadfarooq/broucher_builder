@@ -4,37 +4,63 @@ import BarLoader from "react-spinners/BarLoader";
 import api from "../utils/api";
 import Image from "./Image";
 
-const MyImages = ({ add_image }) => {
+const MyImages = ({
+  add_image,
+  addNewImage,
+  setNewImg,
+  handleRemoveCurrentComponent,
+}) => {
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
   const image_upload = async (e) => {
     if (e.target.files.length > 0) {
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
+      await imageUpload(formData);
+    }
+  };
 
-      try {
-        setLoader(true);
-        const { data } = await api.post("/api/add-user-image", formData);
-        setImages([...images, data.userImage]);
-        setLoader(false);
-      } catch (error) {
-        setLoader(false);
-        toast.error(error.response.data.message);
-      }
+  const get_images = async () => {
+    try {
+      const { data } = await api.get("/api/get-user-image");
+      setImages(data.images);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    const get_images = async () => {
-      try {
-        const { data } = await api.get("/api/get-user-image");
-        setImages(data.images);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     get_images();
   }, []);
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    formData.append("image", addNewImage);
+    await imageUpload(formData);
+    setNewImg("");
+  };
+
+  const imageUpload = async (formData) => {
+    try {
+      setLoader(true);
+      const { data } = await api.post("/api/add-user-image", formData);
+      console.log("image uploaded successfully ", data);
+      setImages([...images, data.userImage]);
+      handleRemoveCurrentComponent();
+      setTimeout(() => {
+        const id = data.userImage._id;
+        document.getElementById(id).click();
+      }, 500);
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (addNewImage) handleImageUpload();
+  }, [addNewImage]);
 
   return (
     <div>

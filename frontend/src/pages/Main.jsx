@@ -14,6 +14,7 @@ import TemplateDesign from "../components/main/TemplateDesign";
 import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
 import api from "../utils/api";
+import { dataUrlToFileUsingFetch } from "../utils/imageHelper";
 
 const Main = () => {
   const [selectItem, setSelectItem] = useState("");
@@ -35,7 +36,11 @@ const Main = () => {
   const [weight, setWeight] = useState("");
   const [text, setText] = useState("");
   const [radius, setRadius] = useState(0);
-
+  // Cropping states start
+  const [startCropping, setStartCropping] = useState(false);
+  const [cropComplete, setCropComplete] = useState(false);
+  const [newImg, setNewImg] = useState("");
+  // Cropping states end
   const [show, setShow] = useState({
     status: true,
     name: "",
@@ -151,6 +156,7 @@ const Main = () => {
       }
       target.style.transform = `rotate(${deg}deg)`;
     };
+
     const mouseUp = (e) => {
       window.removeEventListener("mousemove", mouseMove);
       window.removeEventListener("mouseup", mouseUp);
@@ -178,6 +184,7 @@ const Main = () => {
     setCurrentComponent("");
     setComponents(temp);
   };
+
   const duplicate = (current) => {
     if (current) {
       setComponents([...components, { ...current, id: Date.now() }]);
@@ -360,7 +367,16 @@ const Main = () => {
     get_design();
   }, [design_id]);
 
-  console.log("state :: ", state);
+  const handleImageCrop = async (image) => {
+    const file = await dataUrlToFileUsingFetch(
+      image,
+      `${Date.now().toString()}.png`,
+      "'image/png'"
+    );
+    setNewImg(file);
+    setStartCropping(false);
+  };
+
   return (
     <div className="h-screen bg-black min-w-screen">
       <Header components={components} design_id={design_id} />
@@ -484,7 +500,16 @@ const Main = () => {
                 ></div>
               </div>
             )}
-            {state === "image" && <MyImages add_image={add_image} />}
+            {state === "image" && (
+              <MyImages
+                add_image={add_image}
+                addNewImage={newImg}
+                setNewImg={setNewImg}
+                handleRemoveCurrentComponent={() =>
+                  removeComponent(current_component?.id)
+                }
+              />
+            )}
             {state === "text" && (
               <div>
                 <div className="grid grid-cols-1 gap-2">
@@ -534,6 +559,11 @@ const Main = () => {
                       info={c}
                       current_component={current_component}
                       removeComponent={removeComponent}
+                      startCropping={startCropping}
+                      setStartCropping={setStartCropping}
+                      cropComplete={cropComplete}
+                      setCropComplete={setCropComplete}
+                      handleImageCrop={handleImageCrop}
                     />
                   ))}
                 </div>
@@ -616,23 +646,38 @@ const Main = () => {
                         />
                       </div>
                       {current_component.name === "image" && (
-                        <div className="flex items-start justify-start gap-1">
-                          <span className="text-md w-[70px]">Radius : </span>
-                          <input
-                            onChange={(e) =>
-                              setRadius(parseInt(e.target.value))
-                            }
-                            className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                            type="number"
-                            step={1}
-                            value={current_component.radius}
-                          />
-                        </div>
+                        <>
+                          <div className="flex items-start justify-start gap-1">
+                            <span className="text-md w-[70px]">Radius: </span>
+                            <input
+                              onChange={(e) =>
+                                setRadius(parseInt(e.target.value))
+                              }
+                              className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                              type="number"
+                              step={1}
+                              value={current_component.radius}
+                            />
+                          </div>
+                          <div className="flex justify-between gap-2">
+                            <button
+                              onClick={() => setStartCropping(!startCropping)}
+                              className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
+                            >
+                              {startCropping ? "Cancel Crop" : "Crop"}
+                            </button>
+                            {startCropping && (
+                              <button onClick={() => setCropComplete(true)}>
+                                Done
+                              </button>
+                            )}
+                          </div>
+                        </>
                       )}
                       {current_component.name === "text" && (
                         <>
                           <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[70px]">Padding : </span>
+                            <span className="text-md w-[70px]">Padding: </span>
                             <input
                               onChange={(e) =>
                                 setPadding(parseInt(e.target.value))
@@ -684,6 +729,7 @@ const Main = () => {
                               type="text"
                               value={current_component.title}
                             />
+
                             <button
                               onClick={() => setText(current_component.title)}
                               className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
