@@ -202,7 +202,7 @@ const CreateComponente = ({
             opacity: info.opacity,
             fontFamily: info.fontFamily,
           }}
-          className={`absolute group hover:border-[2px] ${
+          className={`absolute group hover:border-[1px] ${
             info.id === selectItem ? "border-[2px]" : ""
           } border-indigo-500`}
         >

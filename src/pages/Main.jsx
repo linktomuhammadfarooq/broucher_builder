@@ -601,17 +601,16 @@ console.log('currentComponent...', current_component);
             )}
           </div>
 
-          <div className="flex w-full h-full">
+          <div className="flex w-full h-full pt-6">
             <div
               className={`flex justify-center relative items-center h-full ${
                 !current_component
-                  ? "w-full"
-                  : "w-[calc(100%-250px)] relative overflow-hidden"
+                  ? "w-full overflow-auto"
+                  : "w-[calc(100%-250px)] relative overflow-auto"
               }`}
             >
-              <div className="w-[700px] h-[580px] flex justify-center items-center overflow-auto">
+              <div id="main_design" className="w-[816px] h-[1056px] flex justify-center items-center overflow-auto">
                 <div
-                  id="main_design"
                   className="relative w-auto h-auto  select-none"
                 >
                   {components.map((c, i) => (

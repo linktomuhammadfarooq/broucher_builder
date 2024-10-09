@@ -67,7 +67,7 @@ const Header = ({ components, design_id }) => {
     const getDiv = document.getElementById("main_design");
 
     const options = {
-      margin: 0.5, // Margins in inches
+      margin: 0, // Margins in inches
       filename: "design.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true },
