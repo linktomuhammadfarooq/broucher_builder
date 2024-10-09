@@ -1,5 +1,5 @@
 import * as htmlToImage from "html-to-image";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import RotateLoader from "react-spinners/RotateLoader";
 import { saveDesign } from "../database/designService";
@@ -28,29 +28,24 @@ const CreateDesign = () => {
 
   const create_design = async () => {
     const image = await htmlToImage.toBlob(ref.current);
-
-    // const design = JSON.stringify(obj);
-
-    // firestore changes start
-    const designRes = await saveDesign(obj, image);
-    console.log("designRes ", designRes);
-
-    //firestore changes end
-
-    if (image) {
-      //   const formData = new FormData();
-      //   formData.append("design", design);
-      //   formData.append("image", image);
-      try {
-        setLoader(true);
-        // const { data } = await api.post("/api/create-user-design", formData);
-        // navigate(`/design/${data.design._id}/edit`);
-        navigate(`/design/${designRes._id}/edit`);
-        setLoader(false);
-      } catch (error) {
-        setLoader(false);
-        console.log(error.response.data);
-      }
+    setLoader(true);
+    const design = JSON.stringify(obj);
+    const jsonDesign = JSON.parse(design);
+    if (!image) {
+      setLoader(false);
+      return;
+    }
+    //   const formData = new FormData();
+    //   formData.append("design", design);
+    //   formData.append("image", image);
+    try {
+      const designRes = await saveDesign(jsonDesign, image);
+      console.log("designRes ", designRes);
+      navigate(`/design/${designRes._id}/edit`);
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      console.log(error.response.data);
     }
   };
 
@@ -63,12 +58,14 @@ const CreateDesign = () => {
   }, [state, ref]);
 
   return (
-    <div className="relative flex items-center justify-center w-screen h-screen">
-      <div ref={ref} className="relative w-auto h-auto overflow-auto">
-        <CreateComponent info={obj} current_component={{}} />
+    <div className="bg-[#18191B] relative flex items-center justify-center w-full h-full p-[10rem]">
+      <div className="relative flex items-center justify-center w-[700px] h-[580px] overflow-auto">
+        <div ref={ref} className="relative w-auto h-auto overflow-auto">
+          <CreateComponent info={obj} current_component={{}} />
+        </div>
       </div>
       {loader && (
-        <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black">
+        <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-black z-[1000]">
           <RotateLoader color="white" />
         </div>
       )}

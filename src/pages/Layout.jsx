@@ -1,15 +1,14 @@
-import React, { useState } from "react";
 import { BsFolder, BsGrid1X2 } from "react-icons/bs";
 import { FaHome } from "react-icons/fa";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { token_decode } from "../utils/index";
+// import { token_decode } from "../utils/index";
 
 const Layout = () => {
-  const userInfo = token_decode(localStorage.getItem("canva_token"));
+  // const userInfo = token_decode(localStorage.getItem("canva_token"));
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
   const create = () => {
     navigate("/design/create", {
@@ -21,10 +20,10 @@ const Layout = () => {
     });
   };
 
-  const logout = () => {
-    localStorage.removeItem("canva_token");
-    window.location.href = "/";
-  };
+  // const logout = () => {
+  // localStorage.removeItem("canva_token");
+  //   window.location.href = "/";
+  // };
 
   return (
     <div className="bg-[#18191b] min-h-screen w-full">
