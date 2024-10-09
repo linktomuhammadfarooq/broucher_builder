@@ -31,7 +31,7 @@ const Main = () => {
   const [height, setHeight] = useState("");
   const [opacity, setOpacity] = useState("");
   const [zIndex, setzIndex] = useState("");
-  const [textLinks, setTextLinks] = useState([]);
+  const [textLinks, setTextLinks] = useState("");
   const [padding, setPadding] = useState("");
   const [font, setFont] = useState("");
   const [weight, setWeight] = useState("");
@@ -82,7 +82,7 @@ const Main = () => {
       setCurrentComponent: (a) => setCurrentComponent(a),
     },
   ]);
-
+console.log('currentComponent...', current_component);
   // URL validation function
   const isValidURL = (string) => {
     const res = string.match(
@@ -277,7 +277,7 @@ const Main = () => {
       padding: 6,
       font: current_component.font || 20, // Use the font set in current_component
       title: current_component.title || "add text", // Use the title set (h1, h2, etc.)
-      links: current_component.textLinks || "", // Use the title set (h1, h2, etc.)
+      links: current_component.textLinks || textLinks, // Use the title set (h1, h2, etc.)
       weight: current_component.weight || 400,
       color: "#3c3c3d",
       fontFamily: fontFamily,
@@ -343,7 +343,7 @@ const Main = () => {
         components[index].fontFamily =
           fontFamily || current_component.fontFamily;
         components[index].title = text || current_component.title;
-        components[index].links = textLinks || current_component.textLinks;
+        components[index].links = textLinks || current_component.links;
       }
       if (current_component.name === "image") {
         components[index].radius = radius || current_component.radius;
@@ -631,8 +631,8 @@ const Main = () => {
               </div>
             </div>
             {current_component && (
-              <div className="h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
-                <div className="flex flex-col items-start justify-start h-full gap-6 px-2 pt-4">
+              <div className="h-full overflow-auto w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
+                <div className="flex flex-col items-start justify-start h-full gap-6 px-2  pt-4">
                   {current_component.name !== "main_frame" && (
                     <div className="flex items-center justify-start gap-5">
                       <div
@@ -909,25 +909,39 @@ const Main = () => {
                               >
                                 Add
                               </button>
-                              <button
+                             
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-start justify-start gap-2">
+                          <input
+                              onChange={(e) =>
+                                setCurrentComponent({
+                                  ...current_component,
+                                  links: e.target.value,
+                                })
+                              }
+                              className="p-2 bg-transparent border border-gray-700 rounded-md outline-none"
+                              type="text"
+                              value={current_component.links}
+                            />
+                          <button
                                 onClick={() => {
-                                  const title = current_component.title;
+                                  const link = current_component.links;
 
-                                  if (isValidURL(title)) {
+                                  if (isValidURL(link)) {
                                     setCurrentComponent({
                                       ...current_component,
-                                      links: title,
+                                      links: link,
                                     });
-                                    setTextLinks(title);
+                                    setTextLinks(link);
                                   } else {
                                     toast.error("Please enter a valid URL");
                                   }
                                 }}
-                                className="px-4 py-2 text-xs text-white bg-blue-500 rounded-sm"
+                                className="px-4 py-2 mb-4 text-xs text-white bg-blue-500 rounded-sm"
                               >
                                 Add Link
                               </button>
-                            </div>
                           </div>
                         </>
                       )}
