@@ -14,6 +14,7 @@
     "canva-magical-mouse-effect": "^0.0.2",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.2",
     "image-js": "^0.35.5",
     "jspdf": "^2.5.2",
     "react": "^18.2.0",

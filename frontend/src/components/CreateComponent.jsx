@@ -14,44 +14,45 @@ const CreateComponente = ({
   setCropComplete,
   handleImageCrop,
 }) => {
-  const [width, setWidth] = useState(600);
-  const [height, setHeight] = useState(450);
+  const [width, setWidth] = useState(816);
+  const [height, setHeight] = useState(1056);
   const isValidURL = (string) => {
     const res = string.match(
       /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}([\/\w\.-]*)*\/?$/
     );
     return res !== null;
   };
-  const resizeElement = (e) => {
-    e.preventDefault();
+  console.log("info?????", info);
+  //   const resizeElement = (e) => {
+  //     e.preventDefault();
 
-    const startX = e.clientX; // Starting mouse X position
-    const startY = e.clientY; // Starting mouse Y position
-    const startWidth = width; // Starting width of the element
-    const startHeight = height; // Starting height of the element
+  //     const startX = e.clientX; // Starting mouse X position
+  //     const startY = e.clientY; // Starting mouse Y position
+  //     const startWidth = width; // Starting width of the element
+  //     const startHeight = height; // Starting height of the element
 
-    const mouseMove = (moveEvent) => {
-      // Calculate the new dimensions based on mouse movement
-      const newWidth = Math.max(50, startWidth + (moveEvent.clientX - startX)); // Ensure minimum width
-      const newHeight = Math.max(
-        50,
-        startHeight + (moveEvent.clientY - startY)
-      ); // Ensure minimum height
+  //     const mouseMove = (moveEvent) => {
+  //       // Calculate the new dimensions based on mouse movement
+  //       const newWidth = Math.max(50, startWidth + (moveEvent.clientX - startX)); // Ensure minimum width
+  //       const newHeight = Math.max(
+  //         50,
+  //         startHeight + (moveEvent.clientY - startY)
+  //       ); // Ensure minimum height
 
-      // Use functional updates to set the new width and height
-      setWidth(newWidth);
-      setHeight(newHeight);
-    };
+  //       // Use functional updates to set the new width and height
+  //       setWidth(newWidth);
+  //       setHeight(newHeight);
+  //     };
 
-    const mouseUp = () => {
-      window.removeEventListener("mousemove", mouseMove); // Unbind the event listeners
-      window.removeEventListener("mouseup", mouseUp);
-    };
+  //     const mouseUp = () => {
+  //       window.removeEventListener("mousemove", mouseMove); // Unbind the event listeners
+  //       window.removeEventListener("mouseup", mouseUp);
+  //     };
 
-    // Bind the mousemove and mouseup events to the window
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mouseup", mouseUp);
-  };
+  //     // Bind the mousemove and mouseup events to the window
+  //     window.addEventListener("mousemove", mouseMove);
+  //     window.addEventListener("mouseup", mouseUp);
+  //   };
 
   let html = "";
 
@@ -62,10 +63,11 @@ const CreateComponente = ({
           info.setCurrentComponent(info);
           setSelectItem("");
         }}
-        className="hover:border-[2px] hover:border-indigo-500 shadow-md"
+        className="hover:border-[2px] hover:border-indigo-500 shadow-md overflow-auto"
         style={{
-          width: width + "px",
-          height: height + "px",
+          width: `${info.canvasWidth || width}px`,
+          height: `${info.canvasHeight || height}px`,
+        //   overflowY: "scroll",
           background: info.color,
           zIndex: info.z_index,
           position: "relative",
@@ -75,10 +77,10 @@ const CreateComponente = ({
           <img className="w-full h-full" src={info.image} alt="image" />
         )}
 
-        <div
+        {/* <div
           onMouseDown={resizeElement}
-          className={`absolute inset-0 cursor-nwse-resize`} // full size overlay for resizing
-        ></div>
+          className={`absolute inset-0 cursor-nwse-resize`} 
+        ></div> */}
       </div>
     );
   }
@@ -183,8 +185,7 @@ const CreateComponente = ({
   }
   if (info.name === "text") {
     const linkIsValid = isValidURL(info.title);
-    console.log("linkIsValid", linkIsValid);
-    console.log("info?????", info);
+
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
         <div

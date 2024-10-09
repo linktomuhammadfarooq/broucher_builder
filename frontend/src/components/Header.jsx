@@ -1,5 +1,6 @@
 import * as htmlToImage from "html-to-image";
-import { jsPDF } from "jspdf"; // Import jsPDF
+import { jsPDF } from "jspdf";
+import html2pdf from "html2pdf.js";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -53,58 +54,19 @@ const Header = ({ components, design_id }) => {
     document.body.removeChild(link);
   };
 
-  const downloadPDF = async () => {
+  const downloadPDF = () => {
     const getDiv = document.getElementById("main_design");
 
-    // Convert the design into a canvas using html-to-image
-    const canvas = await htmlToImage.toCanvas(getDiv);
+    const options = {
+      margin: 0.5, // Margins in inches
+      filename: "design.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, logging: true },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
 
-    // Initialize jsPDF
-    const pdf = new jsPDF();
-
-    // Add the image (design) to the PDF
-    const imgData = canvas.toDataURL("image/png");
-    const imgWidth = 190; // PDF width for image
-    const pageHeight = pdf.internal.pageSize.height;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-
-    // Now, let's overlay clickable links on top of the image
-
-    const elements = getDiv.querySelectorAll("a"); // Get all anchor tags in the design
-
-    elements.forEach((el) => {
-      const href = el.getAttribute("href");
-      const rect = el.getBoundingClientRect(); // Get the element's position and size in the DOM
-
-      // Convert DOM position to PDF units
-      const xPos = (rect.left / getDiv.offsetWidth) * imgWidth + 10; // Adjust for margins
-      const yPos = (rect.top / getDiv.offsetHeight) * imgHeight + position;
-
-      // Overlay the clickable link on the PDF
-      pdf.link(
-        xPos,
-        yPos,
-        (rect.width / getDiv.offsetWidth) * imgWidth,
-        (rect.height / getDiv.offsetHeight) * imgHeight,
-        { url: href }
-      );
-    });
-
-    // Save the PDF with the design and clickable links
-    pdf.save("design_with_clickable_links.pdf");
+    // Generate and download the PDF
+    html2pdf().from(getDiv).set(options).save();
   };
 
   return (
