@@ -184,7 +184,7 @@ const CreateComponente = ({
     );
   }
   if (info.name === "text") {
-    const linkIsValid = isValidURL(info.title);
+    const linkIsValid = isValidURL(info.links); // Check if the link is valid
 
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
@@ -215,19 +215,16 @@ const CreateComponente = ({
                 fontSize: info.font + "px",
                 fontWeight: info.weight,
                 fontFamily: info.fontFamily,
+                cursor: linkIsValid ? 'pointer' : 'default', // Change cursor style based on link validity
               }}
               className="w-full h-full"
             >
               {linkIsValid ? (
                 <a
-                  href={
-                    info.title.startsWith("http")
-                      ? info.title
-                      : `http://${info.title}`
-                  }
+                  href={info.links.startsWith("http") ? info.links : `http://${info.links}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className=" hover:underline"
                 >
                   {info.title}
                 </a>
@@ -240,6 +237,7 @@ const CreateComponente = ({
       </div>
     );
   }
+
 
   if (info.name === "image") {
     html = (

@@ -937,6 +937,7 @@ console.log('currentComponent...', current_component);
                                       links: link,
                                     });
                                     setTextLinks(link);
+                                    toast.success("Link added successfully!");
                                   } else {
                                     toast.error("Please enter a valid URL");
                                   }
