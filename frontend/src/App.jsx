@@ -1,24 +1,19 @@
 import "react-image-crop/dist/ReactCrop.css";
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateDesign from "./components/CreateDesign";
 import Home from "./components/Home";
 import Projects from "./components/Projects";
 import Templates from "./components/Templates";
-import Index from "./pages/Index";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
-import { token_decode } from "./utils/index";
 
-const userInfo = token_decode(localStorage.getItem("canva_token"));
+// const userInfo = token_decode(localStorage.getItem("canva_token"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: userInfo ? <Layout /> : <Index />,
+    // element: userInfo ? <Layout /> : <Index />,
+    element: <Layout />,
     children: [
       {
         path: "/",
@@ -36,11 +31,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/design/create",
-    element: userInfo ? <CreateDesign /> : <Navigate to="/" />,
+    element: <CreateDesign />,
+    // element: userInfo ? <CreateDesign /> : <Navigate to="/" />,
   },
   {
     path: "/design/:design_id/edit",
-    element: userInfo ? <Main /> : <Navigate to="/" />,
+    element: <Main />,
+    // element: userInfo ? <Main /> : <Navigate to="/" />,
   },
 ]);
 

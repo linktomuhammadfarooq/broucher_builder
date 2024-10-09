@@ -14,7 +14,7 @@ import InitialImage from "../components/InitialImage";
 import TemplateDesign from "../components/main/TemplateDesign";
 import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
-import api from "../utils/api";
+import { getDesignById } from "../database/designService";
 import { dataUrlToFileUsingFetch } from "../utils/imageHelper";
 
 const Main = () => {
@@ -389,9 +389,11 @@ const Main = () => {
   useEffect(() => {
     const get_design = async () => {
       try {
-        const { data } = await api.get(`/api/user-design/${design_id}`);
-        console.log(data);
-        const { design } = data;
+        const design = await getDesignById(design_id);
+        console.log("design :::: ", design);
+        // const { data } = await api.get(`/api/user-design/${design_id}`);
+        // const design1 = data.design;
+        // console.log("design :::: ", design1);
 
         for (let i = 0; i < design.length; i++) {
           design[i].setCurrentComponent = (a) => setCurrentComponent(a);

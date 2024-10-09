@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import BarLoader from "react-spinners/BarLoader";
-import api from "../utils/api";
+import { addImage, getImages } from "../database/imageService";
 import Image from "./Image";
 
 const MyImages = ({
@@ -14,16 +14,15 @@ const MyImages = ({
   const [loader, setLoader] = useState(false);
   const image_upload = async (e) => {
     if (e.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      await imageUpload(formData);
+      await imageUpload(e.target.files[0]);
     }
   };
 
   const get_images = async () => {
     try {
-      const { data } = await api.get("/api/get-user-image");
-      setImages(data.images);
+      const images = await getImages();
+      console.log("images :: ", images);
+      setImages(images);
     } catch (error) {
       console.log(error);
     }
@@ -34,18 +33,20 @@ const MyImages = ({
   }, []);
 
   const handleImageUpload = async () => {
-    const formData = new FormData();
-    formData.append("image", addNewImage);
-    await imageUpload(formData);
+    await imageUpload(addNewImage);
     setNewImg("");
   };
 
-  const imageUpload = async (formData) => {
+  const imageUpload = async (file) => {
     try {
       setLoader(true);
-      const { data } = await api.post("/api/add-user-image", formData);
-      console.log("image uploaded successfully ", data);
-      setImages([...images, data.userImage]);
+      // const formData = new FormData();
+      // formData.append("image", file);
+      // const { dataa } = await api.post("/api/add-user-image", formData);
+      // console.log("dataa ", dataa);
+      const data = await addImage(file);
+      console.log("image uploaded successfully ", data.image_url);
+      setImages([...images, data.image_url]);
       handleRemoveCurrentComponent();
       setTimeout(() => {
         const id = data.userImage._id;
@@ -54,7 +55,8 @@ const MyImages = ({
       setLoader(false);
     } catch (error) {
       setLoader(false);
-      toast.error(error.response.data.message);
+      console.log(error);
+      toast.error(error.response?.data?.message);
     }
   };
 

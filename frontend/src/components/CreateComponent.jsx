@@ -183,8 +183,7 @@ const CreateComponente = ({
   }
   if (info.name === "text") {
     const linkIsValid = isValidURL(info.title);
-    console.log("linkIsValid", linkIsValid);
-    console.log("info?????", info);
+
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
         <div

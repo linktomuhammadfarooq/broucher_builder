@@ -3,7 +3,7 @@ import { jsPDF } from "jspdf"; // Import jsPDF
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../utils/api";
+import { updateDesign } from "../database/designService";
 
 const Header = ({ components, design_id }) => {
   const navigate = useNavigate();
@@ -22,13 +22,22 @@ const Header = ({ components, design_id }) => {
       formData.append("design", JSON.stringify(obj));
       formData.append("image", image);
 
+      const str = JSON.stringify(components);
+      const jsn = JSON.parse(str);
+
+      // const savedDesign = await saveDesign(jsn, image);
+      // console.log("savedDesign -->", savedDesign);
+      // const updatedDesign = await updateDesign(design_id, components, image);
+      // console.log("updatedDesign -->", updatedDesign);
+
       try {
         setLoader(true);
-        const { data } = await api.put(
-          `/api/update-user-design/${design_id}`,
-          formData
-        );
-        toast.success(data.message);
+        // const { data } = await api.put(
+        //   `/api/update-user-design/${design_id}`,
+        //   formData
+        // );
+        await updateDesign(design_id, jsn, image);
+        toast.success("Successfully updated design");
         setLoader(false);
       } catch (error) {
         setLoader(false);
