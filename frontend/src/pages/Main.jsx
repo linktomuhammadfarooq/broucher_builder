@@ -429,6 +429,7 @@ console.log('currentComponent...', current_component);
     );
     setNewImg(file);
     setStartCropping(false);
+    setCropComplete(false);
   };
 
   return (
