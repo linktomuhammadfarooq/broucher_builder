@@ -63,19 +63,50 @@ const Header = ({ components, design_id }) => {
     document.body.removeChild(link);
   };
 
+  // const downloadPDF = () => {
+  //   const getDiv = document.getElementById("main_design");
+
+  //   const options = {
+  //     margin: 0, // Margins in inches
+  //     filename: "design.pdf",
+  //     image: { type: "jpeg", quality: 0.98 },
+  //     html2canvas: { scale: 2, logging: true },
+  //     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  //   };
+
+  //   // Generate and download the PDF
+  //   html2pdf().from(getDiv).set(options).save();
+  // };
+
   const downloadPDF = () => {
     const getDiv = document.getElementById("main_design");
-
-    const options = {
-      margin: 0, // Margins in inches
-      filename: "design.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
-
-    // Generate and download the PDF
-    html2pdf().from(getDiv).set(options).save();
+  
+    const images = getDiv.getElementsByTagName('img');
+    const promises = [];
+  
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      if (!img.complete) {
+        promises.push(
+          new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve; // resolve even if there is an error
+          })
+        );
+      }
+    }
+  
+    Promise.all(promises).then(() => {
+      const options = {
+        margin: 0,
+        filename: "design.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, logging: true, useCORS: true },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+  
+      html2pdf().from(getDiv).set(options).save();
+    });
   };
 
   return (
