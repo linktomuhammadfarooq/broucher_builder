@@ -30,7 +30,7 @@ const MyImages = ({
 
   useEffect(() => {
     get_images();
-  }, []);
+  }, [images]);
 
   const handleImageUpload = async () => {
     await imageUpload(addNewImage);
