@@ -63,7 +63,7 @@ const CreateComponente = ({
           info.setCurrentComponent(info);
           setSelectItem("");
         }}
-        className="hover:border-[2px] hover:border-indigo-500 shadow-md overflow-auto"
+        className="hover:border-[2px] hover:border-indigo-500 shadow-md overflow-y-auto"
         style={{
           width: `${info.canvasWidth || width}px`,
           height: `${info.canvasHeight || height}px`,
@@ -96,9 +96,11 @@ const CreateComponente = ({
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className={`absolute group hover:border-[2px] ${
-          info.id === selectItem ? "border-[2px]" : ""
-        } border-indigo-500`}
+        className={`absolute group border-[2px] hover:border-[2px] hover:border-indigo-500 ${
+          info.id === selectItem
+            ? "border-[2px] border-indigo-500"
+            : "border-transparent"
+        } `}
       >
         {selectItem === info.id && (
           <Element id={info.id} info={info} exId={`${info.id}r`} />
@@ -128,9 +130,11 @@ const CreateComponente = ({
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className={`absolute group hover:border-[2px] ${
-          info.id === selectItem ? "border-[2px]" : ""
-        } border-indigo-500`}
+        className={`absolute group border-[2px] hover:border-[2px] hover:border-indigo-500 ${
+          info.id === selectItem
+            ? "border-[2px] border-indigo-500"
+            : "border-transparent"
+        } `}
       >
         {selectItem === info.id && (
           <Element id={info.id} info={info} exId={`${info.id}c`} />
@@ -161,9 +165,11 @@ const CreateComponente = ({
           zIndex: info.z_index,
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
         }}
-        className={`absolute group hover:border-[2px] ${
-          info.id === selectItem ? "border-[2px]" : ""
-        } border-indigo-500`}
+        className={`absolute group border-[2px] hover:border-[2px] hover:border-indigo-500 ${
+          info.id === selectItem
+            ? "border-[2px] border-indigo-500"
+            : "border-transparent"
+        } `}
       >
         {selectItem === info.id && (
           <Element id={info.id} info={info} exId={`${info.id}t`} />
@@ -184,7 +190,7 @@ const CreateComponente = ({
     );
   }
   if (info.name === "text") {
-    const linkIsValid = isValidURL(info.title);
+    const linkIsValid = isValidURL(info.links); // Check if the link is valid
 
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
@@ -202,9 +208,11 @@ const CreateComponente = ({
             opacity: info.opacity,
             fontFamily: info.fontFamily,
           }}
-          className={`absolute group hover:border-[2px] ${
-            info.id === selectItem ? "border-[2px]" : ""
-          } border-indigo-500`}
+          className={`absolute group border-[2px] hover:border-[2px] hover:border-indigo-500 ${
+            info.id === selectItem
+              ? "border-[2px] border-indigo-500"
+              : "border-transparent"
+          } `}
         >
           {selectItem === info.id && (
             <Element id={info.id} info={info} exId="" />
@@ -215,19 +223,16 @@ const CreateComponente = ({
                 fontSize: info.font + "px",
                 fontWeight: info.weight,
                 fontFamily: info.fontFamily,
+                cursor: linkIsValid ? 'pointer' : 'default', // Change cursor style based on link validity
               }}
               className="w-full h-full"
             >
               {linkIsValid ? (
                 <a
-                  href={
-                    info.title.startsWith("http")
-                      ? info.title
-                      : `http://${info.title}`
-                  }
+                  href={info.links.startsWith("http") ? info.links : `http://${info.links}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className=" hover:underline"
                 >
                   {info.title}
                 </a>
@@ -241,6 +246,7 @@ const CreateComponente = ({
     );
   }
 
+
   if (info.name === "image") {
     html = (
       <div
@@ -253,9 +259,11 @@ const CreateComponente = ({
           transform: info.rotate ? `rotate(${info.rotate}deg)` : "rotate(0deg)",
           opacity: info.opacity,
         }}
-        className={`absolute group hover:border-[2px] ${
-          info.id === selectItem ? "border-[2px]" : ""
-        } border-indigo-500`}
+        className={`absolute group border-[2px] hover:border-[2px] hover:border-indigo-500 ${
+          info.id === selectItem
+            ? "border-[2px] border-indigo-500"
+            : "border-transparent"
+        } `}
       >
         {selectItem === info.id && (
           <Element id={info.id} info={info} exId={`${info.id}img`} />

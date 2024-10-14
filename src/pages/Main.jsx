@@ -269,8 +269,8 @@ console.log('currentComponent...', current_component);
       id: id,
       name: name,
       type,
-      left: 80,
-      top: 250,
+      left: 10,
+      top: 10,
       opacity: 1,
       rotate,
       z_index: 10,
@@ -601,18 +601,17 @@ console.log('currentComponent...', current_component);
             )}
           </div>
 
-          <div className="flex w-full h-full">
+          <div className="flex w-full h-full py-2">
             <div
-              className={`flex justify-center relative items-center h-full ${
+              className={`flex justify-center relative items-center ${
                 !current_component
                   ? "w-full"
-                  : "w-[calc(100%-250px)] relative overflow-hidden"
+                  : "w-[calc(100%-250px)] relative"
               }`}
             >
-              <div className="w-[700px] h-[580px] flex justify-center items-center overflow-auto">
+              <div id="main_design" className="w-auto h-full flex justify-center items-center overflow-y-auto">
                 <div
-                  id="main_design"
-                  className="relative w-auto h-auto  select-none"
+                  className="relative w-full h-full select-none"
                 >
                   {components.map((c, i) => (
                     <CreateComponente
@@ -937,6 +936,7 @@ console.log('currentComponent...', current_component);
                                       links: link,
                                     });
                                     setTextLinks(link);
+                                    toast.success("Link added successfully!");
                                   } else {
                                     toast.error("Please enter a valid URL");
                                   }
