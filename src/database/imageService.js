@@ -5,11 +5,15 @@ import { db } from "./firebase";
 const addImage = async (file) => {
   try {
     const imageUrl = await uploadImage(file);
-    console.log("Image uploaded successfully ", imageUrl.url);
-    const docRef = await addDoc(collection(db, "design-images"), {
-      image_url: imageUrl.url,
-    });
-    return { _id: docRef.id, image_url: imageUrl.url };
+    console.log("Image uploaded successfully ", imageUrl);
+    if (imageUrl?.url) {
+      const docRef = await addDoc(collection(db, "design-images"), {
+        image_url: imageUrl.url,
+      });
+      return { _id: docRef.id, image_url: imageUrl.url };
+    } else {
+      return;
+    }
   } catch (error) {
     console.error("Error adding document: ", error);
   }
