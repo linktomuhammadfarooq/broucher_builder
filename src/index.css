@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.public-DraftStyleDefault-block{
+    margin: 0 !important;
+}

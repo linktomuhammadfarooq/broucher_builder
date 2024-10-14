@@ -275,11 +275,11 @@ const Main = () => {
       name: name,
       type,
       left: 10,
-      top: 10,
+      top: 100,
       opacity: 1,
       rotate,
-      z_index: 10,
-      padding: 6,
+      z_index: 12,
+      padding: 5,
       font: current_component.font || 20, // Use the font set in current_component
       title: current_component.title || getDefaultText(), // Use the title set (h1, h2, etc.)
       links: current_component.textLinks || textLinks, // Use the title set (h1, h2, etc.)
@@ -672,27 +672,30 @@ const Main = () => {
                       </div>
                     </div>
                   )}
-                  <div className="flex items-start justify-start gap-4">
-                    <span>Color : </span>
-                    <label
-                      className="w-[30px] h-[30px] cursor-pointer rounded-sm"
-                      style={{
-                        background: `${
-                          current_component.color &&
-                          current_component.color !== "#fff"
-                            ? current_component.color
-                            : "gray"
-                        }`,
-                      }}
-                      htmlFor="color"
-                    ></label>
-                    <input
-                      onChange={(e) => setColor(e.target.value)}
-                      type="color"
-                      className="invisible"
-                      id="color"
-                    />
-                  </div>
+                  {current_component.name !== "text" && (
+                    <div className="flex items-start justify-start gap-4">
+                      <span>Color : </span>
+                      <label
+                        className="w-[30px] h-[30px] cursor-pointer rounded-sm"
+                        style={{
+                          background: `${
+                            current_component.color &&
+                            current_component.color !== "#fff"
+                              ? current_component.color
+                              : "gray"
+                          }`,
+                        }}
+                        htmlFor="color"
+                      ></label>
+                      <input
+                        onChange={(e) => setColor(e.target.value)}
+                        type="color"
+                        className="invisible"
+                        id="color"
+                      />
+                    </div>
+                  )}
+
                   {/* {current_component.name === "main_frame" &&
                   <>
                   <div className="flex items-start justify-start gap-1">
@@ -748,228 +751,235 @@ const Main = () => {
                       </div>
                     )}
 
-                  {current_component.name !== "main_frame" && (
-                    <div className="flex flex-col gap-5">
-                      <div className="flex items-start justify-start gap-1">
-                        <span className="text-md w-[70px]">Opacity : </span>
-                        <input
-                          onChange={opacityHandle}
-                          className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                          type="number"
-                          step={0.1}
-                          min={0.1}
-                          max={1}
-                          value={current_component.opacity}
-                        />
-                      </div>
-                      <div className="flex items-start justify-start gap-1">
-                        <span className="text-md w-[70px]">Z-Index : </span>
-                        <input
-                          onChange={(e) => {
-                            setzIndex(parseInt(e.target.value));
-                            setCurrentComponent((prev) => ({
-                              ...prev,
-                              z_index: parseInt(e.target.value),
-                            }));
-                          }}
-                          className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                          type="number"
-                          step={1}
-                          value={current_component.z_index}
-                        />
-                      </div>
-                      {current_component.name === "image" && (
-                        <>
-                          <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[70px]">Radius: </span>
-                            <input
-                              onChange={(e) =>
-                                setRadius(parseInt(e.target.value))
-                              }
-                              className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                              type="number"
-                              step={1}
-                              value={current_component.radius}
-                            />
-                          </div>
-                          <div className="flex justify-between gap-2">
-                            <button
-                              onClick={() => setStartCropping(!startCropping)}
-                              className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
-                            >
-                              {startCropping ? "Cancel Crop" : "Crop"}
-                            </button>
-                            {startCropping && (
-                              <button onClick={() => setCropComplete(true)}>
-                                Done
-                              </button>
-                            )}
-                          </div>
-                        </>
-                      )}
-                      {current_component.name === "text" && (
-                        <>
-                          <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[70px]">Padding: </span>
-                            <input
-                              onChange={(e) => {
-                                setPadding(parseInt(e.target.value));
-                                setCurrentComponent((prev) => ({
-                                  ...prev,
-                                  padding: parseInt(e.target.value),
-                                }));
-                              }}
-                              className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                              type="number"
-                              step={1}
-                              value={current_component.padding}
-                            />
-                          </div>
-                          <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[75px]">
-                              Font size :{" "}
-                            </span>
-                            <input
-                              onChange={(e) => {
-                                setFont(parseInt(e.target.value));
-                                setCurrentComponent((prev) => ({
-                                  ...prev,
-                                  font: parseInt(e.target.value), // Set font size
-                                }));
-                              }}
-                              className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                              type="number"
-                              step={1}
-                              value={current_component.font}
-                            />
-                          </div>
-                          <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[70px]">Weight : </span>
-                            <input
-                              onChange={(e) => {
-                                setWeight(parseInt(e.target.value));
-                                setCurrentComponent((prev) => ({
-                                  ...prev,
-                                  weight: parseInt(e.target.value),
-                                }));
-                              }}
-                              className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
-                              type="number"
-                              step={100}
-                              min={100}
-                              max={900}
-                              value={current_component.weight}
-                            />
-                          </div>
-                          <div className="flex items-start justify-start gap-1">
-                            <span className="text-md w-[100px]">
-                              Font Family :{" "}
-                            </span>
-                            <select
-                              value={
-                                current_component.fontFamily
-                                  ? current_component.fontFamily
-                                  : fontFamily
-                              }
-                              onChange={(e) => {
-                                const selectedFont = e.target.value;
-                                setFontFamily(selectedFont);
-                                setCurrentComponent((prev) => ({
-                                  ...prev,
-                                  fontFamily: selectedFont, // Update current component font family
-                                }));
-                              }}
-                              className="border w-[85px] p-1 border-gray-700 bg-transparent rounded-md outline-none"
-                            >
-                              {fontFamilies.map((font) => (
-                                <option key={font.value} value={font.value}>
-                                  {font.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="flex flex-wrap items-start justify-start gap-1">
-                            {Object.keys(headingStyles).map((heading) => (
-                              <button
-                                key={heading}
-                                onClick={() => {
-                                  const { fontSize, fontWeight } =
-                                    headingStyles[heading];
-                                  setCurrentComponent((prev) => ({
-                                    ...prev,
-                                    font: parseInt(fontSize), // Set font size
-                                    weight: fontWeight, // Set font weight
-                                  }));
-                                  setFont(parseInt(fontSize));
-                                  setSelectedHeading(heading);
-                                }}
-                                className={`p-2 text-white rounded-md cursor-pointer mr-1 ${
-                                  selectedHeading === heading
-                                    ? "bg-gray-600"
-                                    : "bg-gray-700"
-                                }`}
-                              >
-                                {heading.toUpperCase()}
-                              </button>
-                            ))}
-                          </div>
-                          <div className="flex flex-col items-start justify-start gap-2">
-                            <input
-                              onChange={(e) =>
-                                setCurrentComponent({
-                                  ...current_component,
-                                  title: e.target.value,
-                                })
-                              }
-                              className="p-2 bg-transparent border border-gray-700 rounded-md outline-none"
-                              type="text"
-                              value={current_component.title}
-                            />
+                  {current_component.name !== "main_frame" &&
+                    current_component.name !== "text" && (
+                      <div className="flex flex-col gap-5">
+                        <div className="flex items-start justify-start gap-1">
+                          <span className="text-md w-[70px]">Opacity : </span>
+                          <input
+                            onChange={opacityHandle}
+                            className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                            type="number"
+                            step={0.1}
+                            min={0.1}
+                            max={1}
+                            value={current_component.opacity}
+                          />
+                        </div>
+                        <div className="flex items-start justify-start gap-1">
+                          <span className="text-md w-[70px]">Z-Index : </span>
+                          <input
+                            onChange={(e) => {
+                              setzIndex(parseInt(e.target.value));
+                              setCurrentComponent((prev) => ({
+                                ...prev,
+                                z_index: parseInt(e.target.value),
+                              }));
+                            }}
+                            className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                            type="number"
+                            step={1}
+                            value={current_component.z_index}
+                          />
+                        </div>
+                        {current_component.name === "image" && (
+                          <>
                             <div className="flex items-start justify-start gap-1">
+                              <span className="text-md w-[70px]">Radius: </span>
+                              <input
+                                onChange={(e) =>
+                                  setRadius(parseInt(e.target.value))
+                                }
+                                className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                                type="number"
+                                step={1}
+                                value={current_component.radius}
+                              />
+                            </div>
+                            <div className="flex justify-between gap-2">
                               <button
-                                onClick={() => setText(current_component.title)}
+                                onClick={() => setStartCropping(!startCropping)}
                                 className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
                               >
-                                Add
+                                {startCropping ? "Cancel Crop" : "Crop"}
                               </button>
+                              {startCropping && (
+                                <button onClick={() => setCropComplete(true)}>
+                                  Done
+                                </button>
+                              )}
                             </div>
-                          </div>
-                          <div className="flex flex-col items-start justify-start gap-2">
-                            <input
-                              onChange={(e) =>
-                                setCurrentComponent({
-                                  ...current_component,
-                                  links: e.target.value,
-                                })
-                              }
-                              className="p-2 bg-transparent border border-gray-700 rounded-md outline-none"
-                              type="text"
-                              value={current_component.links}
-                            />
-                            <button
-                              onClick={() => {
-                                const link = current_component.links;
-
-                                if (isValidURL(link)) {
+                          </>
+                        )}
+                        {current_component.name === "text" && (
+                          <>
+                            <div className="flex items-start justify-start gap-1">
+                              <span className="text-md w-[70px]">
+                                Padding:{" "}
+                              </span>
+                              <input
+                                onChange={(e) => {
+                                  setPadding(parseInt(e.target.value));
+                                  setCurrentComponent((prev) => ({
+                                    ...prev,
+                                    padding: parseInt(e.target.value),
+                                  }));
+                                }}
+                                className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                                type="number"
+                                step={1}
+                                value={current_component.padding}
+                              />
+                            </div>
+                            <div className="flex items-start justify-start gap-1">
+                              <span className="text-md w-[75px]">
+                                Font size :{" "}
+                              </span>
+                              <input
+                                onChange={(e) => {
+                                  setFont(parseInt(e.target.value));
+                                  setCurrentComponent((prev) => ({
+                                    ...prev,
+                                    font: parseInt(e.target.value), // Set font size
+                                  }));
+                                }}
+                                className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                                type="number"
+                                step={1}
+                                value={current_component.font}
+                              />
+                            </div>
+                            <div className="flex items-start justify-start gap-1">
+                              <span className="text-md w-[70px]">
+                                Weight :{" "}
+                              </span>
+                              <input
+                                onChange={(e) => {
+                                  setWeight(parseInt(e.target.value));
+                                  setCurrentComponent((prev) => ({
+                                    ...prev,
+                                    weight: parseInt(e.target.value),
+                                  }));
+                                }}
+                                className="w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md"
+                                type="number"
+                                step={100}
+                                min={100}
+                                max={900}
+                                value={current_component.weight}
+                              />
+                            </div>
+                            <div className="flex items-start justify-start gap-1">
+                              <span className="text-md w-[100px]">
+                                Font Family :{" "}
+                              </span>
+                              <select
+                                value={
+                                  current_component.fontFamily
+                                    ? current_component.fontFamily
+                                    : fontFamily
+                                }
+                                onChange={(e) => {
+                                  const selectedFont = e.target.value;
+                                  setFontFamily(selectedFont);
+                                  setCurrentComponent((prev) => ({
+                                    ...prev,
+                                    fontFamily: selectedFont, // Update current component font family
+                                  }));
+                                }}
+                                className="border w-[85px] p-1 border-gray-700 bg-transparent rounded-md outline-none"
+                              >
+                                {fontFamilies.map((font) => (
+                                  <option key={font.value} value={font.value}>
+                                    {font.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="flex flex-wrap items-start justify-start gap-1">
+                              {Object.keys(headingStyles).map((heading) => (
+                                <button
+                                  key={heading}
+                                  onClick={() => {
+                                    const { fontSize, fontWeight } =
+                                      headingStyles[heading];
+                                    setCurrentComponent((prev) => ({
+                                      ...prev,
+                                      font: parseInt(fontSize), // Set font size
+                                      weight: fontWeight, // Set font weight
+                                    }));
+                                    setFont(parseInt(fontSize));
+                                    setSelectedHeading(heading);
+                                  }}
+                                  className={`p-2 text-white rounded-md cursor-pointer mr-1 ${
+                                    selectedHeading === heading
+                                      ? "bg-gray-600"
+                                      : "bg-gray-700"
+                                  }`}
+                                >
+                                  {heading.toUpperCase()}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex flex-col items-start justify-start gap-2">
+                              <input
+                                onChange={(e) =>
                                   setCurrentComponent({
                                     ...current_component,
-                                    links: link,
-                                  });
-                                  setTextLinks(link);
-                                  toast.success("Link added successfully!");
-                                } else {
-                                  toast.error("Please enter a valid URL");
+                                    title: e.target.value,
+                                  })
                                 }
-                              }}
-                              className="px-4 py-2 mb-4 text-xs text-white bg-blue-500 rounded-sm"
-                            >
-                              Add Link
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  )}
+                                className="p-2 bg-transparent border border-gray-700 rounded-md outline-none"
+                                type="text"
+                                value={current_component.title}
+                              />
+                              <div className="flex items-start justify-start gap-1">
+                                <button
+                                  onClick={() =>
+                                    setText(current_component.title)
+                                  }
+                                  className="px-4 py-2 text-xs text-white bg-purple-500 rounded-sm"
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-start justify-start gap-2">
+                              <input
+                                onChange={(e) =>
+                                  setCurrentComponent({
+                                    ...current_component,
+                                    links: e.target.value,
+                                  })
+                                }
+                                className="p-2 bg-transparent border border-gray-700 rounded-md outline-none"
+                                type="text"
+                                value={current_component.links}
+                              />
+                              <button
+                                onClick={() => {
+                                  const link = current_component.links;
+
+                                  if (isValidURL(link)) {
+                                    setCurrentComponent({
+                                      ...current_component,
+                                      links: link,
+                                    });
+                                    setTextLinks(link);
+                                    toast.success("Link added successfully!");
+                                  } else {
+                                    toast.error("Please enter a valid URL");
+                                  }
+                                }}
+                                className="px-4 py-2 mb-4 text-xs text-white bg-blue-500 rounded-sm"
+                              >
+                                Add Link
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
                 </div>
               </div>
             )}
