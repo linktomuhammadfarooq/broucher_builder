@@ -82,7 +82,12 @@ const Main = () => {
       setCurrentComponent: (a) => setCurrentComponent(a),
     },
   ]);
-console.log('currentComponent...', current_component);
+
+  const getDefaultText = () => {
+    return JSON.parse(
+      '{"blocks":[{"key":"8p0km","text":"Add Text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+    );
+  };
   // URL validation function
   const isValidURL = (string) => {
     const res = string.match(
@@ -276,7 +281,7 @@ console.log('currentComponent...', current_component);
       z_index: 10,
       padding: 6,
       font: current_component.font || 20, // Use the font set in current_component
-      title: current_component.title || "add text", // Use the title set (h1, h2, etc.)
+      title: current_component.title || getDefaultText(), // Use the title set (h1, h2, etc.)
       links: current_component.textLinks || textLinks, // Use the title set (h1, h2, etc.)
       weight: current_component.weight || 400,
       color: "#3c3c3d",
@@ -403,7 +408,6 @@ console.log('currentComponent...', current_component);
     const get_design = async () => {
       try {
         const design = await getDesignById(design_id);
-        console.log("design :::: ", design);
         // const { data } = await api.get(`/api/user-design/${design_id}`);
         // const design1 = data.design;
         // console.log("design :::: ", design1);
@@ -433,6 +437,8 @@ console.log('currentComponent...', current_component);
     setStartCropping(false);
     setCropComplete(false);
   };
+
+  console.log("compoenntss , ", components);
 
   return (
     <div className="h-screen bg-black min-w-screen">
@@ -604,15 +610,14 @@ console.log('currentComponent...', current_component);
           <div className="flex w-full h-full py-2">
             <div
               className={`flex justify-center relative items-center ${
-                !current_component
-                  ? "w-full"
-                  : "w-[calc(100%-250px)] relative"
+                !current_component ? "w-full" : "w-[calc(100%-250px)] relative"
               }`}
             >
-              <div id="main_design" className="w-auto h-full flex justify-center items-center overflow-y-auto">
-                <div
-                  className="relative w-full h-full select-none"
-                >
+              <div
+                id="main_design"
+                className="flex items-center justify-center w-auto h-full overflow-y-auto"
+              >
+                <div className="relative w-full h-full select-none">
                   {components.map((c, i) => (
                     <CreateComponente
                       selectItem={selectItem}
@@ -627,6 +632,22 @@ console.log('currentComponent...', current_component);
                       cropComplete={cropComplete}
                       setCropComplete={setCropComplete}
                       handleImageCrop={handleImageCrop}
+                      handleSetText={(data) => {
+                        setCurrentComponent({
+                          ...current_component,
+                          title: data,
+                        });
+                        const updatedComponents = components.map((c) => {
+                          if (c.id === current_component.id) {
+                            return {
+                              ...c,
+                              title: data,
+                            };
+                          }
+                          return c;
+                        });
+                        setComponents(updatedComponents);
+                      }}
                     />
                   ))}
                 </div>
@@ -634,7 +655,7 @@ console.log('currentComponent...', current_component);
             </div>
             {current_component && (
               <div className="h-full overflow-auto w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
-                <div className="flex flex-col items-start justify-start h-full gap-6 px-2  pt-4">
+                <div className="flex flex-col items-start justify-start h-full gap-6 px-2 pt-4">
                   {current_component.name !== "main_frame" && (
                     <div className="flex items-center justify-start gap-5">
                       <div
@@ -911,11 +932,10 @@ console.log('currentComponent...', current_component);
                               >
                                 Add
                               </button>
-                             
                             </div>
                           </div>
                           <div className="flex flex-col items-start justify-start gap-2">
-                          <input
+                            <input
                               onChange={(e) =>
                                 setCurrentComponent({
                                   ...current_component,
@@ -926,25 +946,25 @@ console.log('currentComponent...', current_component);
                               type="text"
                               value={current_component.links}
                             />
-                          <button
-                                onClick={() => {
-                                  const link = current_component.links;
+                            <button
+                              onClick={() => {
+                                const link = current_component.links;
 
-                                  if (isValidURL(link)) {
-                                    setCurrentComponent({
-                                      ...current_component,
-                                      links: link,
-                                    });
-                                    setTextLinks(link);
-                                    toast.success("Link added successfully!");
-                                  } else {
-                                    toast.error("Please enter a valid URL");
-                                  }
-                                }}
-                                className="px-4 py-2 mb-4 text-xs text-white bg-blue-500 rounded-sm"
-                              >
-                                Add Link
-                              </button>
+                                if (isValidURL(link)) {
+                                  setCurrentComponent({
+                                    ...current_component,
+                                    links: link,
+                                  });
+                                  setTextLinks(link);
+                                  toast.success("Link added successfully!");
+                                } else {
+                                  toast.error("Please enter a valid URL");
+                                }
+                              }}
+                              className="px-4 py-2 mb-4 text-xs text-white bg-blue-500 rounded-sm"
+                            >
+                              Add Link
+                            </button>
                           </div>
                         </>
                       )}

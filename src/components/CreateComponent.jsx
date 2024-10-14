@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CustomEditor from "./CustomEditor";
 import Element from "./Element";
 import ImageCrop from "./ImageCrop";
 
@@ -13,6 +14,7 @@ const CreateComponente = ({
   cropComplete,
   setCropComplete,
   handleImageCrop,
+  handleSetText,
 }) => {
   const [width, setWidth] = useState(816);
   const [height, setHeight] = useState(1056);
@@ -22,7 +24,13 @@ const CreateComponente = ({
     );
     return res !== null;
   };
-  console.log("info?????", info);
+
+  // console.log("info?????", info);
+
+  const showTextEditorData = (data) => {
+    console.log("Text editor data:", data);
+    handleSetText(data);
+  };
   //   const resizeElement = (e) => {
   //     e.preventDefault();
 
@@ -67,7 +75,7 @@ const CreateComponente = ({
         style={{
           width: `${info.canvasWidth || width}px`,
           height: `${info.canvasHeight || height}px`,
-        //   overflowY: "scroll",
+          //   overflowY: "scroll",
           background: info.color,
           zIndex: info.z_index,
           position: "relative",
@@ -218,7 +226,7 @@ const CreateComponente = ({
             <Element id={info.id} info={info} exId="" />
           )}
           <div onMouseDown={() => info.moveElement(info.id, info)}>
-            <h2
+            {/* <h2
               style={{
                 fontSize: info.font + "px",
                 fontWeight: info.weight,
@@ -239,13 +247,18 @@ const CreateComponente = ({
               ) : (
                 info.title
               )}
-            </h2>
+            </h2> */}
+            <div>
+              <CustomEditor
+                defaultValue={info.title}
+                showTextEditorData={showTextEditorData}
+              />
+            </div>
           </div>
         </div>
       </div>
     );
   }
-
 
   if (info.name === "image") {
     html = (
