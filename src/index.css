@@ -4,4 +4,17 @@
 
 .public-DraftStyleDefault-block{
     margin: 3px 0 !important;
+    /* display: flex;
+    align-items: center; */
 }
+.rdw-link-decorator-icon {
+    display: none !important;
+  }
+  
+  .rdw-editor-wrapper a {
+    cursor: pointer;
+  }
+  /* .rdw-link-decorator-wrapper{
+    display: flex;
+    align-items: center;
+  } */
