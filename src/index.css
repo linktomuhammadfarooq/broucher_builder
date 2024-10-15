@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .public-DraftStyleDefault-block{
-    margin: 0 !important;
+    margin: 3px 0 !important;
 }

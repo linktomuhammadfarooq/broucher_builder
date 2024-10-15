@@ -40,7 +40,7 @@ const CustomEditor = ({ defaultValue, showTextEditorData }) => {
       onEditorStateChange={setEditorState}
       toolbarOnFocus
       onBlur={handleOnBlur}
-      toolbarClassName="absolute z-40 w-[500px] h-[110px] top-[-110px] left-[-5px] p-4 mb-4 rounded-lg bg-gray-200"
+      toolbarClassName="absolute z-[100] w-[500px] h-[110px] top-[-112px] left-[-5px] rounded-lg bg-gray-200"
       toolbar={{
         options: [
           "inline",

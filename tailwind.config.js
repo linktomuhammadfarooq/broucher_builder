@@ -13,6 +13,9 @@ export default {
         verdana: ["Verdana", "sans-serif"],
         tahoma: ["Tahoma", "sans-serif"],
       },
+      zIndex: {
+        '100': '100',
+      }
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],

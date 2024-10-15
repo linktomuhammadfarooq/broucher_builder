@@ -278,8 +278,8 @@ const Main = () => {
       top: 100,
       opacity: 1,
       rotate,
-      z_index: 12,
-      padding: 5,
+      z_index: 10,
+      padding: 6,
       font: current_component.font || 20, // Use the font set in current_component
       title: current_component.title || getDefaultText(), // Use the title set (h1, h2, etc.)
       links: current_component.textLinks || textLinks, // Use the title set (h1, h2, etc.)
