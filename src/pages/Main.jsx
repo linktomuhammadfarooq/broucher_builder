@@ -642,22 +642,9 @@ const Main = () => {
                       cropComplete={cropComplete}
                       setCropComplete={setCropComplete}
                       handleImageCrop={handleImageCrop}
-                      handleSetText={(data) => {
-                        setCurrentComponent({
-                          ...current_component,
-                          title: data,
-                        });
-                        const updatedComponents = components.map((c) => {
-                          if (c.id === current_component.id) {
-                            return {
-                              ...c,
-                              title: data,
-                            };
-                          }
-                          return c;
-                        });
-                        setComponents(updatedComponents);
-                      }}
+                      handleSetText={(data) =>
+                        handleUpdateCurrentComponent({ title: data })
+                      }
                     />
                   ))}
                 </div>
