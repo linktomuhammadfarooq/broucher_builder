@@ -440,6 +440,16 @@ const Main = () => {
 
   console.log("compoenntss , ", components);
 
+  const handleUpdateCurrentComponent = (values) => {
+    setCurrentComponent({ ...current_component, ...values });
+    const updatedComponents = components.map((c) => {
+      if (c.id !== current_component.id) return c;
+
+      return { ...c, ...values };
+    });
+    setComponents(updatedComponents);
+  };
+
   return (
     <div className="h-screen bg-black min-w-screen">
       <Header components={components} design_id={design_id} />
@@ -571,8 +581,8 @@ const Main = () => {
                 add_image={add_image}
                 addNewImage={newImg}
                 setNewImg={setNewImg}
-                handleRemoveCurrentComponent={() =>
-                  removeComponent(current_component?.id)
+                handleUpdateCropedImage={(image_url) =>
+                  handleUpdateCurrentComponent({ image: image_url })
                 }
               />
             )}

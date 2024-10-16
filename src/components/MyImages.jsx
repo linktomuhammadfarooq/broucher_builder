@@ -8,20 +8,21 @@ const MyImages = ({
   add_image,
   addNewImage,
   setNewImg,
-  handleRemoveCurrentComponent,
+  handleUpdateCropedImage,
 }) => {
   const [images, setImages] = useState([]);
   const [loader, setLoader] = useState(false);
+
   const image_upload = async (e) => {
     if (e.target.files.length > 0) {
-      await imageUpload(e.target.files[0]);
+      await onImageUpload(e.target.files[0]);
     }
   };
 
-  const get_images = async () => {
+  const handleGetImages = async () => {
     try {
       const images = await getImages();
-      console.log("images :: ", images);
+      console.log("Images list : ", images);
       setImages(images);
     } catch (error) {
       console.log(error);
@@ -29,29 +30,20 @@ const MyImages = ({
   };
 
   useEffect(() => {
-    get_images();
-  }, [images]);
+    handleGetImages();
+  }, []);
 
   const handleImageUpload = async () => {
-    await imageUpload(addNewImage);
+    await onImageUpload(addNewImage);
     setNewImg("");
   };
 
-  const imageUpload = async (file) => {
+  const onImageUpload = async (file) => {
     try {
       setLoader(true);
-      // const formData = new FormData();
-      // formData.append("image", file);
-      // const { dataa } = await api.post("/api/add-user-image", formData);
-      // console.log("dataa ", dataa);
       const data = await addImage(file);
-      console.log("image uploaded successfully ", data.image_url);
-      setImages([...images, data.image_url]);
-      handleRemoveCurrentComponent();
-      setTimeout(() => {
-        const id = data.userImage._id;
-        document.getElementById(id).click();
-      }, 500);
+      handleGetImages();
+      handleUpdateCropedImage(data.image_url);
       setLoader(false);
     } catch (error) {
       setLoader(false);
