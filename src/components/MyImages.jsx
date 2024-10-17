@@ -22,7 +22,6 @@ const MyImages = ({
   const handleGetImages = async () => {
     try {
       const images = await getImages();
-      console.log("Images list : ", images);
       setImages(images);
     } catch (error) {
       console.log(error);

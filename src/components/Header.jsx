@@ -1,5 +1,4 @@
 import * as htmlToImage from "html-to-image";
-import { jsPDF } from "jspdf";
 import html2pdf from "html2pdf.js";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -18,7 +17,6 @@ const Header = ({ components, design_id }) => {
       const obj = {
         design: components,
       };
-      console.log(obj);
       const formData = new FormData();
       formData.append("design", JSON.stringify(obj));
       formData.append("image", image);
@@ -80,10 +78,10 @@ const Header = ({ components, design_id }) => {
 
   const downloadPDF = () => {
     const getDiv = document.getElementById("main_design");
-  
-    const images = getDiv.getElementsByTagName('img');
+
+    const images = getDiv.getElementsByTagName("img");
     const promises = [];
-  
+
     for (let i = 0; i < images.length; i++) {
       const img = images[i];
       if (!img.complete) {
@@ -95,7 +93,7 @@ const Header = ({ components, design_id }) => {
         );
       }
     }
-  
+
     Promise.all(promises).then(() => {
       const options = {
         margin: 0,
@@ -104,7 +102,7 @@ const Header = ({ components, design_id }) => {
         html2canvas: { scale: 2, logging: true, useCORS: true },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
       };
-  
+
       html2pdf().from(getDiv).set(options).save();
     });
   };

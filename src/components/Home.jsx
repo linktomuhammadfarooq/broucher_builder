@@ -61,7 +61,6 @@ const Home = () => {
       //   const { data } = await api.get("/api/user-designs");
       //   console.log("node design", data.designs);
       const designs = await getDesigns();
-      console.log("f design ", designs);
       setDesign(designs);
     } catch (error) {
       console.log(error);

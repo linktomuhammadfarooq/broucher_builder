@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { BsFillImageFill, BsFolder, BsGrid1X2 } from "react-icons/bs";
 import { FaCloudUploadAlt, FaShapes, FaTrash } from "react-icons/fa";
 import { IoDuplicateOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import { RxTransparencyGrid } from "react-icons/rx";
 import { TfiText } from "react-icons/tfi";
 import { useParams } from "react-router-dom";
 import BackgroundImages from "../components/BackgroundImages";
@@ -438,8 +436,6 @@ const Main = () => {
     setCropComplete(false);
   };
 
-  console.log("compoenntss , ", components);
-
   const handleUpdateCurrentComponent = (values) => {
     setCurrentComponent({ ...current_component, ...values });
     const updatedComponents = components.map((c) => {
@@ -455,7 +451,7 @@ const Main = () => {
       <Header components={components} design_id={design_id} />
       <div className="flex h-[calc(100%-60px)] w-screen">
         <div className="w-[80px] bg-[#18191B] z-50 h-full text-gray-400 overflow-y-auto">
-          <div
+          {/* <div
             onClick={() => setElements("design", "design")}
             className={` ${
               show.name === "design" ? "bg-[#252627]" : ""
@@ -465,7 +461,7 @@ const Main = () => {
               <BsGrid1X2 />
             </span>
             <span className="text-xs font-medium">Design</span>
-          </div>
+          </div> */}
 
           <div
             onClick={() => setElements("shape", "shape")}
@@ -506,7 +502,7 @@ const Main = () => {
             <span className="text-xs font-medium">Text</span>
           </div>
 
-          <div
+          {/* <div
             onClick={() => setElements("project", "projects")}
             className={`${
               show.name === "projects" ? "bg-[#252627]" : ""
@@ -516,9 +512,9 @@ const Main = () => {
               <BsFolder />
             </span>
             <span className="text-xs font-medium">Project</span>
-          </div>
+          </div> */}
 
-          <div
+          {/* <div
             onClick={() => setElements("initImage", "images")}
             className={`${
               show.name === "images" ? "bg-[#252627]" : ""
@@ -528,9 +524,9 @@ const Main = () => {
               <BsFillImageFill />
             </span>
             <span className="text-xs font-medium">Images</span>
-          </div>
+          </div> */}
 
-          <div
+          {/* <div
             onClick={() => setElements("background", "background")}
             className={`${
               show.name === "background" ? "bg-[#252627]" : ""
@@ -540,7 +536,7 @@ const Main = () => {
               <RxTransparencyGrid />
             </span>
             <span className="text-xs font-medium">Background</span>
-          </div>
+          </div> */}
         </div>
         <div className="h-full w-[calc(100%-75px)]">
           <div

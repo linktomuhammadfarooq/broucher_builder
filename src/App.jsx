@@ -2,8 +2,6 @@ import "react-image-crop/dist/ReactCrop.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateDesign from "./components/CreateDesign";
 import Home from "./components/Home";
-import Projects from "./components/Projects";
-import Templates from "./components/Templates";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
 
@@ -16,14 +14,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/templates",
-        element: <Templates />,
-      },
-      {
-        path: "/projects",
-        element: <Projects />,
       },
     ],
   },

@@ -21,7 +21,6 @@ const saveDesign = async (design, image) => {
       created: Timestamp.now(),
       updated: Timestamp.now(),
     };
-    console.log("Saving design ->", obj);
     const docRef = await addDoc(collection(db, "designs"), obj);
     return { _id: docRef.id, ...design };
   } catch (error) {
@@ -37,7 +36,6 @@ const updateDesign = async (designId, design, image) => {
 
     //   todo delete previous image
     const docRef = await doc(db, "designs", designId);
-    console.log("docRef: ", docRef);
     await updateDoc(docRef, {
       components: design,
       image_url: url,

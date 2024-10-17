@@ -1,4 +1,3 @@
-import { BsFolder, BsGrid1X2 } from "react-icons/bs";
 import { FaHome } from "react-icons/fa";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 // import { token_decode } from "../utils/index";
@@ -101,7 +100,7 @@ const Layout = () => {
                 <span className="font-medium">Home</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to="/projects"
                 className={`text-[#e0dddd] px-2 py-2 flex justify-start items-center gap-2 ${
@@ -113,8 +112,8 @@ const Layout = () => {
                 </span>
                 <span className="font-medium">Projects</span>
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link
                 to="/templates"
                 className={`text-[#e0dddd] px-2 py-2 flex justify-start items-center gap-2 ${
@@ -126,7 +125,7 @@ const Layout = () => {
                 </span>
                 <span className="font-medium">Templates</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="ml-[300px] w-[calc(100%-300px)]">

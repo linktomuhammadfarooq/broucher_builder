@@ -21,7 +21,6 @@ const CustomEditor = ({ defaultValue, showTextEditorData }) => {
   );
 
   const handleOnBlur = (event, editorState) => {
-    console.log("ON Blur callback => ", contentState);
     showTextEditorData(contentState);
   };
 

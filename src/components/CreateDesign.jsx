@@ -40,7 +40,6 @@ const CreateDesign = () => {
     //   formData.append("image", image);
     try {
       const designRes = await saveDesign(jsonDesign, image);
-      console.log("designRes ", designRes);
       navigate(`/design/${designRes._id}/edit`);
       setLoader(false);
     } catch (error) {

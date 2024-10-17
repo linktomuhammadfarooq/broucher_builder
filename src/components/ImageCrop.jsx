@@ -15,7 +15,6 @@ function ImageCrop({
   const imageRef = useRef(null);
   const canvasRef = useRef(null);
 
-  console.log("ImageCrop ", cropComplete);
   useEffect(() => {
     if (cropComplete) {
       cropImageNow();
@@ -24,7 +23,7 @@ function ImageCrop({
 
   const cropImageNow = () => {
     const image = imageRef.current;
-    console.log("crop ", crop);
+
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
