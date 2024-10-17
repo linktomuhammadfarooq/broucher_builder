@@ -7,8 +7,6 @@ import Templates from "./components/Templates";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
 
-// const userInfo = token_decode(localStorage.getItem("canva_token"));
-
 const router = createBrowserRouter([
   {
     path: "/",
