@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CustomEditor from "./CustomEditor";
 import Element from "./Element";
 import ImageCrop from "./ImageCrop";
@@ -18,6 +18,22 @@ const CreateComponente = ({
 }) => {
   const [width, setWidth] = useState(816);
   const [height, setHeight] = useState(1056);
+  const [toolbarPosition, setToolbarPosition] = useState("top");
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const editorPosition = editorRef.current.getBoundingClientRect();
+      const availableSpaceAbove = editorPosition.top;
+      const availableSpaceBelow = window.innerHeight - editorPosition.bottom;
+
+      if (availableSpaceAbove < 120 && availableSpaceBelow > 120) {
+        setToolbarPosition("bottom");
+      } else {
+        setToolbarPosition("top");
+      }
+    }
+  }, [selectItem]);
   const isValidURL = (string) => {
     const res = string.match(
       /^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}([\/\w\.-]*)*\/?$/
@@ -203,6 +219,7 @@ const CreateComponente = ({
     html = (
       <div onClick={() => info.setCurrentComponent(info)}>
         <div
+         ref={editorRef}
           id={info.id}
           style={{
             left: info.left + "px",
@@ -252,6 +269,7 @@ const CreateComponente = ({
               <CustomEditor
                 defaultValue={info.title}
                 showTextEditorData={showTextEditorData}
+                toolbarPosition={toolbarPosition}
               />
             </div>
           </div>

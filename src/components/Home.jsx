@@ -96,12 +96,12 @@ const Home = () => {
       <div className="w-fill h-[250px] rounded-md overflow-hidden">
         <CanvaMagical options={options}>
           <div className="relative flex items-center justify-center w-full h-full">
-            <button
+            {/* <button
               onClick={() => setShow(!show)}
               className="px-4 py-2 text-[15px] overflow-hidden text-center bg-[#8b3dffad] text-white rounded-[3px] font-medium hover:bg-[#8b3dffd3] absolute top-3 right-3"
             >
               Custom size
-            </button>
+            </button> */}
             <form
               onSubmit={create}
               className={`absolute top-16 right-3 gap-3 bg-[#252627] w-[250px] p-4 text-white ${

@@ -13,8 +13,5 @@
   
   .rdw-editor-wrapper a {
     cursor: pointer;
+    margin-top: 0;
   }
-  /* .rdw-link-decorator-wrapper{
-    display: flex;
-    align-items: center;
-  } */

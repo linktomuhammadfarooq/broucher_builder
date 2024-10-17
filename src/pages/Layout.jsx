@@ -29,12 +29,14 @@ const Layout = () => {
       <div className="bg-[#252627] shadow-md fixed left-0 top-0 w-full z-20">
         <div className="w-[98%] m-auto py-3">
           <div className="flex items-center justify-between">
-            <div className="w-[80px] h-[48px]">
-              <img
-                className="w-full h-full"
-                src="https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg"
-                alt=""
-              />
+            <div className="w-[200px] h-[48px] flex items-center text-white font-semibold">
+              <Link to="/">
+                {/* <img
+            src="https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg"
+            alt=""
+          /> */}
+                Brochure Builder
+              </Link>
             </div>
             <div className="relative flex items-center justify-center gap-4">
               <button

@@ -248,7 +248,7 @@ const Main = () => {
       name: name,
       type,
       left: 90,
-      top: 250,
+      top: 150,
       opacity: 1,
       width: 200,
       height: 150,
@@ -263,6 +263,7 @@ const Main = () => {
     setSelectItem(id);
     setCurrentComponent(style);
     setComponents([...components, style]);
+    setShow({ name: "", status: true });
   };
 
   const add_text = (name, type, fontFamily) => {
@@ -323,6 +324,7 @@ const Main = () => {
     setSelectItem(id);
     setCurrentComponent(style);
     setComponents([...components, style]);
+    setShow({ name: "", status: true });
   };
 
   useEffect(() => {
@@ -499,7 +501,7 @@ const Main = () => {
             <span className="text-2xl">
               <TfiText />
             </span>
-            <span className="text-xs font-medium">Text</span>
+            <span className="text-xs font-medium">Add Text</span>
           </div>
 
           {/* <div
