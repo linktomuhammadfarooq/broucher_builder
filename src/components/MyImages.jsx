@@ -63,11 +63,10 @@ const MyImages = ({
     <div>
       <div
         className="w-full h-[40px] flex justify-center items-center bg-purple-500 cursor-pointer rounded-sm text-white mb-3"
-        onClick={() => document.getElementById("image").click()}
+        onClick={() => document.getElementById("image").click()} // Handles click on entire div
       >
-        <label className="text-center cursor-pointer" htmlFor="image">
-          Upload image
-        </label>
+        <span className="text-center cursor-pointer">Upload image</span>{" "}
+        {/* Changed label to span */}
         <input
           readOnly={loader}
           onChange={image_upload}
