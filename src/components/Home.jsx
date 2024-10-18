@@ -66,7 +66,6 @@ const Home = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
     get_user_design();
   }, []);

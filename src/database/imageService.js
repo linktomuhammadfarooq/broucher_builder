@@ -43,8 +43,6 @@ const getImages = async () => {
     snapshot.forEach((doc) => {
       images.push({ _id: doc.id, ...doc.data() });
     });
-
-    console.log("Sorted images:", images);
     return images;
   } catch (error) {
     console.error("Error getting documents: ", error);
@@ -52,8 +50,6 @@ const getImages = async () => {
   return [];
 };
 const deleteImage = async (id) => {
-  console.log('id image,,,,,', id);
-  
   try {
     const imageDoc = doc(db, "design-images", id); // Reference to the specific document
     await deleteDoc(imageDoc); // Delete the document from Firestore

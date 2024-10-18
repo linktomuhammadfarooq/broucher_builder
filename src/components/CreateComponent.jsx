@@ -27,7 +27,7 @@ const CreateComponente = ({
       const availableSpaceAbove = editorPosition.top;
       const availableSpaceBelow = window.innerHeight - editorPosition.bottom;
 
-      if (availableSpaceAbove < 120 && availableSpaceBelow > 120) {
+      if (availableSpaceAbove < 160 && availableSpaceBelow > 160) {
         setToolbarPosition("bottom");
       } else {
         setToolbarPosition("top");
